@@ -14,11 +14,14 @@
 	<td class="height">
 	</td>
 	<td class="notes">
-		<div contentEditable="true">
+		<div>
 			additional notes place here
 		</div>
 	</td>
-	<td class="actions">
+	<td class="color" style="display: none">
+		<input class="color" value="FFFFFF" />
+	</td>
+	<td class="actions" style="display: none">
 		<a href="javascript:void(0)" class="visibleBtn">hide</a>
 	</td>
 	
@@ -37,6 +40,11 @@
 			$(".places", this).html(data.sleepingPlaces);
 			$(".phones", this).html(data.phones);
 			$(".height", this).html(data.height);
+			
+			if(typeof data.color !== "undefined") {
+				$(".color .color", this).attr("value", data.color);
+				this.style.backgroundColor = "#"+data.color;
+			}
 			
 			if(typeof data.notes !== "undefined" && data.notes != "")
 				$(".notes div", this)[0].innerHTML = data.notes;
@@ -66,6 +74,16 @@
 			
 			$(".notes", this).focusout(function() {
 				_self.data.notes = $(".notes div", _self)[0].innerHTML;
+				$("#preloader").show();
+				Application.saveMountain(_self.data, function(){
+					$("#preloader").hide();
+				});
+			});
+			
+			$(".color .color", _self).change(function() {
+				_self.data.color = $(".color .color", _self).attr("value");
+				_self.style.backgroundColor = "#"+_self.data.color;
+				
 				$("#preloader").show();
 				Application.saveMountain(_self.data, function(){
 					$("#preloader").hide();

@@ -4,6 +4,11 @@
 		<script src="./libs/jquery-1.4.2.js" type="text/javascript" language="javascript" charset="utf-8"></script>
 		<script src="./libs/json2.js" type="text/javascript" language="javascript" charset="utf-8"></script>
 		
+		<script src="./libs/acunote-shortcuts.js" type="text/javascript"></script>
+		<link href="./styles/acunote-shortcuts.css" type="text/css" media="screen"/>
+		
+		<script type="text/javascript" src="./libs/jscolor/jscolor.js"></script>
+		
 		<style type="text/css">
 		body {
 			margin:0;
@@ -29,10 +34,29 @@
 
 		</style>
 	</head>
-	<body>
+	<body onload="shortcutListener.init();">
+		<script type="text/javascript">
+			var SHORTCUTS = {
+				'e': {
+					'd': {
+						'i': {
+							't' : function() { 
+								$("#resetBtn").show();
+								$(".actions").show();
+								$(".color").show();
+								$(".notes div").attr("contentEditable", true);
+							}
+						}
+					}
+				}
+			}
+		</script>
+		
 		<div class="hold" id="preloader">
 			<img src="./images/preloader.gif" align="middle" border="0"/>
 		</div>
+		
+		<a href="javascript:void(0)" id="resetBtn" style="display: none">Reset</a>
 		
 		<script>
 			Lib.require("flashurlloader", function() {
@@ -40,18 +64,21 @@
 					Lib.require("./config.js", function() {
 						Lib.require("./Application.js", function() {
 							Application.prefetchData(function() {
-								Lib.require("./libs/component.js");
-								//$("#saveBtn").click(function() { Application.saveMountains(); });
-								$("#resetBtn").click(function() { Application.resetMountains(); });
-								$("#preloader").hide();
+								Lib.require("./libs/component.js", function(){
+									$("#resetBtn").click(function() { Application.resetMountains(); });
+									$("#preloader").hide();
+									
+									jscolor.init();
+								});
 							});
 						});
 					});
 				});
 			});
 		</script>
+		
 		<script type="component" source="./components/mountainslist" id="list"></script>
-		<a href="javascript:void(0)" id="resetBtn">Reset</a>
+		
 		
 	</body>
 </html>
