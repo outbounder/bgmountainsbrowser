@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<script src="./libs/LibScriptLoader.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+		<script src="./libs/jquery-1.4.2.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+		<script src="./libs/json2.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+		
+		<style type="text/css">
+		body {
+			margin:0;
+			padding:0;
+		}
+
+		.hold {
+			width: 200px;
+			height: 200px;
+			text-align: center;
+			border: 1px solid #000;
+			background-color: red;
+			color: #fff;
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			margin-left: -100px; 
+			/* Half the width of the DIV tag which is 50 pixels */
+			margin-top: -100px; 
+			/* Half the height of the DIV tag which is also 50 pixels */
+
+		}
+
+		</style>
+	</head>
+	<body>
+		<div class="hold" id="preloader">
+			<img src="./images/preloader.gif" align="middle" border="0"/>
+		</div>
+		
+		<script>
+			Lib.require("flashurlloader", function() {
+				UrlLoaderContext.init(function() {
+					Lib.require("./config.js", function() {
+						Lib.require("./Application.js", function() {
+							Application.prefetchData(function() {
+								Lib.require("./libs/component.js");
+								//$("#saveBtn").click(function() { Application.saveMountains(); });
+								$("#resetBtn").click(function() { Application.resetMountains(); });
+								$("#preloader").hide();
+							});
+						});
+					});
+				});
+			});
+		</script>
+		<script type="component" source="./components/mountainslist" id="list"></script>
+		<a href="javascript:void(0)" id="resetBtn">Reset</a>
+		
+	</body>
+</html>

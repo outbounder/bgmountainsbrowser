@@ -1,0 +1,54 @@
+<table border="1">
+	<thead>
+		<tr>
+			<th><a href="javascript:void(0)" id="sortById">Id</a></th>
+			<th>name</th>
+			<th>pic</th>
+			<th><a href="javascript:void(0)" id="sortBySleepingPlaces">sleeping places</a></th>
+			<th>phones</th>
+			<th><a href="javascript:void(0)" id="sortBySeaLevel">sea level</a></th>
+			<th>notes</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+	</tbody>
+	
+	<script>
+		this.renderMountains = function() {
+			$(this).fadeOut("normal", function() {
+				$("tbody", this).children().remove();
+			
+				var entryViewRenderer = Component.fromPath("./components/mountainRender");
+				
+				for(var i in Application.mountains) {
+					var entry = Application.mountains[i];
+					var view = entryViewRenderer.cloneNode(true);
+					view.setData = entryViewRenderer.setData; // durty hack, scope to future component improvement
+					view.setData(entry);
+					$("tbody", this)[0].appendChild(view);
+				}
+				$(this).fadeIn("normal");
+			});
+		}
+		
+		var _self = this;
+		$("#sortById", this).click(function() {
+			Application.sortById();
+			_self.renderMountains();
+		});
+		
+		$("#sortBySleepingPlaces",this).click(function() {
+			Application.sortBySleepingPlaces();
+			_self.renderMountains();
+		});
+		
+		$("#sortBySeaLevel",this).click(function() {
+			Application.sortBySeaLevel();
+			_self.renderMountains();
+		});
+		
+		this.renderMountains();
+	</script>
+</table>

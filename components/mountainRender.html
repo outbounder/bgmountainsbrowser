@@ -1,0 +1,77 @@
+<tr>
+	<td class="id">
+	</td>
+	<td class="name">
+		<a href="" class="namelink"></a>
+	</td>
+	<td class="pic">
+		<img src="" widht="100" height="100" />
+	</td>
+	<td class="places">
+	</td>
+	<td class="phones">
+	</td>
+	<td class="height">
+	</td>
+	<td class="notes">
+		<div contentEditable="true">
+			additional notes place here
+		</div>
+	</td>
+	<td class="actions">
+		<a href="javascript:void(0)" class="visibleBtn">hide</a>
+	</td>
+	
+	<script>
+	 //<![CDATA[
+		this.setData = function(data) {
+			this.data = data;
+			
+			$(".id",this).html(data.id);
+			$(".namelink", this).attr("href", data.url);
+			$(".namelink", this).html(data.name);
+			$(".pic img", this).attr("src", data.pic);
+			if(data.visible == 'false')
+				$(".pic img", this).hide();
+				
+			$(".places", this).html(data.sleepingPlaces);
+			$(".phones", this).html(data.phones);
+			$(".height", this).html(data.height);
+			
+			if(typeof data.notes !== "undefined" && data.notes != "")
+				$(".notes div", this)[0].innerHTML = data.notes;
+				
+			if(data.visible == 'true' || typeof data.visible === "undefined")
+				$(".visibleBtn", this).html("hide");
+			else
+				$(".visibleBtn", this).html("show");
+			
+			var _self = this;
+			$(".visibleBtn", this).click(function() {
+				if(typeof _self.data.visible === "undefined" || _self.data.visible == 'true')
+					_self.data.visible = 'false';
+				else	
+					_self.data.visible = 'true';
+					
+				Application.saveMountain(_self.data, function(){
+					if(_self.data.visible == 'false') {
+						$(".pic img", _self).hide();
+						$(".visibleBtn", _self).html("show");
+					} else {
+						$(".pic img", _self).show();
+						$(".visibleBtn", _self).html("hide");
+					}
+				});
+			});
+			
+			$(".notes", this).focusout(function() {
+				_self.data.notes = $(".notes div", _self)[0].innerHTML;
+				$("#preloader").show();
+				Application.saveMountain(_self.data, function(){
+					$("#preloader").hide();
+				});
+			});
+		}
+	 //]]>
+	</script>
+</tr>
